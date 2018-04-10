@@ -1,0 +1,14 @@
+[package]
+name = "system-service"
+version = "0.1.0"
+authors = ["Joe Wilm <joe@jwilm.com>"]
+description = "Framework to handle logging, signals, etc. so you can focus on business logic"
+license = "Apache-2.0"
+repository = "https://github.com/OneSignal/rust-service"
+documentation = "https://docs.rs/system-service"
+
+[dependencies]
+chan = "0.1"
+chan-signal = "0.3"
+log = "0.4"
+env_logger = "0.5"
