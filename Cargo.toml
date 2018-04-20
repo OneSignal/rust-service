@@ -1,6 +1,6 @@
 [package]
 name = "system-service"
-version = "0.2.1"
+version = "0.2.2"
 authors = ["Joe Wilm <joe@jwilm.com>"]
 description = "Framework to handle logging, signals, etc. so you can focus on business logic"
 license = "Apache-2.0"
