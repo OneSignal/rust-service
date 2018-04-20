@@ -103,7 +103,7 @@ impl<T: Send + io::Write> log::Log for Logger<T> {
 
     fn log(&self, record: &log::Record) {
         if self.enabled(record.metadata()) &&
-            self.target_filter.iter().any(|t| t == record.target())
+            self.target_filter.iter().any(|t| t.starts_with(record.target()))
         {
             let prefix = self.systemd_level(record);
 
