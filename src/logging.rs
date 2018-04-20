@@ -28,7 +28,7 @@ pub trait LogOptions {
     /// Only messages with this prefix will be filtered. For instance, if the
     /// package name is "foobar", returning a string "foobar" here will cause
     /// only messages from the main package to be emitted.
-    fn target_filter(&self) -> String;
+    fn target_filter(&self) -> Vec<String>;
 
     /// Controls minimum level of messages to be logged.
     ///
@@ -41,7 +41,7 @@ impl<'a> LogOptions for &'a LogOptions {
         (*self).include_systemd_level()
     }
 
-    fn target_filter(&self) -> String {
+    fn target_filter(&self) -> Vec<String> {
         (*self).target_filter()
     }
 
@@ -53,7 +53,7 @@ impl<'a> LogOptions for &'a LogOptions {
 pub struct Logger<T> {
     level: log::LevelFilter,
     output: sync::Mutex<T>,
-    target_filter: String,
+    target_filter: Vec<String>,
     include_systemd_level: bool,
 }
 
@@ -102,7 +102,9 @@ impl<T: Send + io::Write> log::Log for Logger<T> {
     }
 
     fn log(&self, record: &log::Record) {
-        if self.enabled(record.metadata()) && record.target().starts_with(&self.target_filter) {
+        if self.enabled(record.metadata()) &&
+            self.target_filter.iter().any(|t| t == record.target())
+        {
             let prefix = self.systemd_level(record);
 
             if let Ok(ref mut writer) = self.output.lock() {
